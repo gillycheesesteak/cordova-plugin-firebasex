@@ -10,7 +10,6 @@
 @import FirebasePerformance;
 @import FirebaseCore;
 @import FirebaseAuth;
-@import FirebaseFunctions;
 @import UserNotifications;
 @import CommonCrypto;
 @import AuthenticationServices;
@@ -2471,29 +2470,6 @@ static FIRMultiFactorResolver* multiFactorResolver;
         }
     }
     return value;
-}
-
-/*
- * Functions
- */
-- (void)functionsHttpsCallable:(CDVInvokedUrlCommand*)command {
-    [self.commandDelegate runInBackground:^{
-        @try {
-            __weak __auto_type weakSelf = self;
-            NSString* name = [command.arguments objectAtIndex:0];
-            NSDictionary* arguments = [command.arguments objectAtIndex:1];
-            [[[FIRFunctions functions] HTTPSCallableWithName:name] callWithObject:arguments
-                                                                  completion:^(FIRHTTPSCallableResult* _Nullable result, NSError* _Nullable error) {
-                if (error != nil) {
-                    [weakSelf sendPluginErrorWithError:error command:command];
-                } else {
-                    [weakSelf sendPluginDictionaryResult:result.data command:command callbackId:command.callbackId];
-                }
-            }];
-        }@catch (NSException *exception) {
-            [self handlePluginExceptionWithContext:exception :command];
-        }
-    }];
 }
 
 /*
